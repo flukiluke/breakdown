@@ -25,6 +25,27 @@ function fromUTF8Hex(inputHex) {
   }
 }
 
+function toUTF16Hex(chars) {
+  var hexChars = '';
+  var codePoint;
+  for (let char of chars) {
+      codePoint = char.charCodeAt(0).toString(16).toUpperCase();
+      hexChars += '0'.repeat(4 - codePoint.length) + codePoint;
+      if (char.length == 2) {
+          codePoint = char.charCodeAt(1).toString(16).toUpperCase();
+          hexChars += '0'.repeat(4 - codePoint.length) + codePoint;
+      }
+
+  }
+  return (hexChars.match(/(.{4})/g) || ['']).join(' ');
+}
+
+function fromUTF16Hex(inputHex) {
+    alert('Not implemented');
+}
+
+
+
 function toUTF32Hex(chars) {
   var hexChars = '';
   var codePoint;
@@ -58,6 +79,11 @@ function updateUTF8Hex(text) {
   $('#ta-utf8hex').val(hexStr);
 }
 
+function updateUTF16Hex(text) {
+  var hexStr = toUTF16Hex(text, false);
+  $('#ta-utf16hex').val(hexStr);
+}
+
 function updateUTF32Hex(text) {
   var hexStr = toUTF32Hex(text, false);
   $('#ta-utf32hex').val(hexStr);
@@ -75,6 +101,7 @@ $(function() {
   $('#bt-raw').click(function(e) {
     var text = $('#ta-raw').val();
     updateUTF32Hex(text);
+    updateUTF16Hex(text);
     updateUTF8Hex(text);
     updateCharList(text);    
   });
@@ -82,6 +109,15 @@ $(function() {
     var text = fromUTF8Hex($('#ta-utf8hex').val());
     updateRaw(text);
     updateUTF32Hex(text);
+    updateUTF16Hex(text);
+    updateUTF8Hex(text);
+    updateCharList(text);
+  });
+  $('#bt-utf16hex').click(function(e) {
+    var text = fromUTF16Hex($('#ta-utf16hex').val());
+    updateRaw(text);
+    updateUTF32Hex(text);
+    updateUTF16Hex(text);
     updateUTF8Hex(text);
     updateCharList(text);
   });
@@ -89,6 +125,7 @@ $(function() {
     var text = fromUTF32Hex($('#ta-utf32hex').val());
     updateRaw(text);
     updateUTF32Hex(text);
+    updateUTF16Hex(text);
     updateUTF8Hex(text);
     updateCharList(text);
   });
